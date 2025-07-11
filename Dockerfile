@@ -31,8 +31,10 @@ RUN pip install --no-cache-dir --upgrade pip \
 # Copy application code
 COPY . .
 
+ENV PORT=7860
+
 # Expose the default Hugging Face port
 EXPOSE 7860
 
 # Launch the application using gunicorn
-CMD gunicorn --bind 0.0.0.0:$PORT --workers 1 main:app
+CMD ["/bin/sh", "-c", "gunicorn --bind 0.0.0.0:$PORT --workers 1 main:app"]

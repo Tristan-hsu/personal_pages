@@ -136,7 +136,6 @@ PERSONAL_INFO_TRANSLATIONS = {
         'chinese_name': '許銘軒',
         'title': 'AI Engineer & Data Scientist',
         'location': 'Taipei, Taiwan',
-        'phone': '0972-143-390',
         'email': 'minghsuanhsu.workspace@gmail.com',
         'summary': 'Experienced AI Engineer with strong background in mathematical modeling and software development. Skilled in Python, TensorFlow, PyTorch, and computer vision. Proven track record in AI application development, research, and cross-functional collaboration.'
     },
@@ -145,7 +144,6 @@ PERSONAL_INFO_TRANSLATIONS = {
         'chinese_name': 'Ming-Hsuan Hsu',
         'title': 'AI工程師與資料科學家',
         'location': '台北，台灣',
-        'phone': '0972-143-390',
         'email': 'minghsuanhsu.workspace@gmail.com',
         'summary': '新進的AI工程師，具數學建模，資料分析背景。熟練使用Python、TensorFlow、PyTorch和電腦視覺技術。有AI應用開發、研究和跨域協作的經驗。'
     }
