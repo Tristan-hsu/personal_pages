@@ -1,0 +1,339 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<section id="hero" class="hero-section">
+    <div class="container">
+        <div class="row align-items-center min-vh-100 py-5">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-3">
+                    {{ personal_info.name }}
+                    <small class="text-muted d-block fs-5">{{ personal_info.chinese_name }}</small>
+                </h1>
+                <h2 class="h4 text-info mb-3">{{ personal_info.title }}</h2>
+                <p class="lead mb-4">{{ personal_info.summary }}</p>
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    <a href="#contact" class="btn btn-primary">
+                        <i class="fas fa-envelope me-2"></i>{{ translations.hero.get_in_touch }}
+                    </a>
+                    <a href="{{ url_for('download_resume') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-download me-2"></i>{{ translations.hero.download_resume }}
+                    </a>
+                    <a href="https://github.com/Tristan-hsu" target="_blank" class="btn btn-outline-secondary">
+                        <i class="fab fa-github me-2"></i>GitHub
+                    </a>
+                </div>
+                <div class="contact-info">
+                    <p class="mb-2">
+                        <i class="fas fa-map-marker-alt me-2 text-info"></i>{{ personal_info.location }}
+                    </p>
+                    <p class="mb-2">
+                        <i class="fas fa-phone me-2 text-info"></i>{{ personal_info.phone }}
+                    </p>
+                    <p class="mb-0">
+                        <i class="fas fa-envelope me-2 text-info"></i>{{ personal_info.email }}
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="profile-image-container">
+                    <i class="fas fa-user-circle fa-10x text-secondary"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="py-5 bg-dark">
+    <div class="container">
+        <h2 class="text-center mb-5">{{ translations.about.title }}</h2>
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <p class="lead text-center">
+                    {{ translations.about.description }}
+                </p>
+                <div class="row mt-5">
+                    <div class="col-md-4 text-center mb-4">
+                        <i class="fas fa-graduation-cap fa-3x text-info mb-3"></i>
+                        <h5>{{ translations.about.education_label }}</h5>
+                        <p>{{ translations.about.education_desc | replace('\n', '<br>') | safe }}</p>
+                    </div>
+                    <div class="col-md-4 text-center mb-4">
+                        <i class="fas fa-briefcase fa-3x text-info mb-3"></i>
+                        <h5>{{ translations.about.experience_label }}</h5>
+                        <p>{{ translations.about.experience_desc | replace('\n', '<br>') | safe }}</p>
+                    </div>
+                    <div class="col-md-4 text-center mb-4">
+                        <i class="fas fa-certificate fa-3x text-info mb-3"></i>
+                        <h5>{{ translations.about.certifications_label }}</h5>
+                        <p>{{ translations.about.certifications_desc | replace('\n', '<br>') | safe }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Experience Section -->
+<section id="experience" class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">{{ translations.experience.title }}</h2>
+        <div class="timeline">
+            {% for job in work_experience %}
+            <div class="timeline-item">
+                <div class="timeline-marker"></div>
+                <div class="timeline-content">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div>
+                                    <h5 class="card-title mb-1">{{ job.title }}</h5>
+                                    <h6 class="text-info mb-0">{{ job.company }}</h6>
+                                </div>
+                                <div class="text-end">
+                                    <small class="text-muted">{{ job.period }}</small>
+                                    <br>
+                                    <small class="text-muted">{{ job.location }}</small>
+                                </div>
+                            </div>
+                            <ul class="list-unstyled mb-3">
+                                {% for responsibility in job.responsibilities %}
+                                <li class="mb-1">
+                                    <i class="fas fa-check text-success me-2"></i>{{ responsibility }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            <div class="technologies">
+                                {% for tech in job.technologies %}
+                                <span class="badge bg-secondary me-1 mb-1">{{ tech }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Education Section -->
+<section id="education" class="py-5 bg-dark">
+    <div class="container">
+        <h2 class="text-center mb-5">{{ translations.education.title }}</h2>
+        <div class="row">
+            {% for edu in education %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ edu.degree }}</h5>
+                        <h6 class="text-info mb-2">{{ edu.institution }}</h6>
+                        <p class="text-muted mb-2">{{ edu.period }}</p>
+                        <p class="card-text">{{ edu.specialization }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Skills Section -->
+<section id="skills" class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">{{ translations.skills.title }}</h2>
+        <div class="row">
+            {% for category, skill_list in skills.items() %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fas fa-code text-info me-2"></i>{{ category }}
+                        </h5>
+                        <div class="skill-tags">
+                            {% for skill in skill_list %}
+                            <span class="badge bg-primary me-1 mb-2">{{ skill }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Projects Section -->
+<section id="projects" class="py-5 bg-dark">
+    <div class="container">
+        <h2 class="text-center mb-5">{{ translations.projects.title }}</h2>
+        <div class="row">
+            {% for project in projects %}
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ project.title }}</h5>
+                        <p class="text-muted mb-2">{{ project.period }}</p>
+                        <p class="card-text">{{ project.description }}</p>
+                        <div class="mb-3">
+                            <h6>{{ translations.projects.key_features }}</h6>
+                            <ul class="list-unstyled">
+                                {% for feature in project.features %}
+                                <li class="mb-1">
+                                    <i class="fas fa-star text-warning me-2"></i>{{ feature }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="technologies">
+                            {% for tech in project.technologies %}
+                            <span class="badge bg-info me-1 mb-1">{{ tech }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Certifications Section -->
+<section id="certifications" class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">{{ translations.certifications.title }}</h2>
+        <div class="row">
+            {% for cert in certifications %}
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div>
+                                <h5 class="card-title">{{ cert.name }}</h5>
+                                <h6 class="text-info mb-0">{{ cert.issuer }}</h6>
+                            </div>
+                            <div class="text-end">
+                                <small class="text-muted">{{ cert.date }}</small>
+                            </div>
+                        </div>
+                        <p class="card-text">{{ cert.description }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">ID: {{ cert.credential_id }}</small>
+                            <a href="{{ cert.verify_url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-external-link-alt me-1"></i>{{ translations.certifications.verify }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- GitHub Section -->
+<section id="github" class="py-5 bg-dark">
+    <div class="container">
+        <h2 class="text-center mb-5">{{ translations.github.title }}</h2>
+        
+        {% if github_user %}
+        <div class="row mb-4">
+            <div class="col-md-8 mx-auto">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">
+                            <i class="fab fa-github me-2"></i>{{ github_user.login }}
+                        </h5>
+                        <p class="card-text">{{ github_user.bio or 'AI Engineer & Data Scientist' }}</p>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h6>{{ github_user.public_repos }}</h6>
+                                <small class="text-muted">{{ translations.github.repositories }}</small>
+                            </div>
+                            <div class="col-md-4">
+                                <h6>{{ github_user.followers }}</h6>
+                                <small class="text-muted">{{ translations.github.followers }}</small>
+                            </div>
+                            <div class="col-md-4">
+                                <h6>{{ github_user.following }}</h6>
+                                <small class="text-muted">{{ translations.github.following }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="row">
+            {% if github_repos %}
+                {% for repo in github_repos[:6] %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="{{ repo.html_url }}" target="_blank" class="text-decoration-none">
+                                    {{ repo.name }}
+                                </a>
+                            </h5>
+                            <p class="card-text">{{ repo.description or 'No description available' }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    {% if repo.language %}
+                                    <span class="badge bg-primary">{{ repo.language }}</span>
+                                    {% endif %}
+                                </div>
+                                <div class="text-muted">
+                                    <i class="fas fa-star"></i> {{ repo.stargazers_count }}
+                                    <i class="fas fa-code-branch ms-2"></i> {{ repo.forks_count }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+            <div class="col-12 text-center">
+                <p class="text-muted">{{ translations.github.no_repos }}</p>
+                <a href="https://github.com/Tristan-hsu" target="_blank" class="btn btn-outline-primary">
+                    <i class="fab fa-github me-2"></i>{{ translations.github.visit_profile }}
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">{{ translations.contact.title }}</h2>
+        <div class="row">
+            <div class="col-lg-6 mx-auto">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="mb-4">{{ translations.contact.info }}</h5>
+                        <div class="contact-item mb-3">
+                            <i class="fas fa-envelope text-info me-3"></i>
+                            <a href="mailto:{{ personal_info.email }}">{{ personal_info.email }}</a>
+                        </div>
+                        <div class="contact-item mb-3">
+                            <i class="fas fa-phone text-info me-3"></i>
+                            <a href="tel:{{ personal_info.phone }}">{{ personal_info.phone }}</a>
+                        </div>
+                        <div class="contact-item mb-3">
+                            <i class="fas fa-map-marker-alt text-info me-3"></i>
+                            {{ personal_info.location }}
+                        </div>
+                        <div class="contact-item mb-3">
+                            <i class="fab fa-github text-info me-3"></i>
+                            <a href="https://github.com/Tristan-hsu" target="_blank">{{ translations.contact.github_profile }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

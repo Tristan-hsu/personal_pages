@@ -1,0 +1,29 @@
+name: Deploy to Hugging Face Space
+
+on:
+  push:
+    branches: [main]    # 只有 main 更新時才部署
+  workflow_dispatch:     # 也允許手動觸發
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0   # 要保留完整 Git 歷史
+        lfs: true        # Space 對 >10 MB 檔案要求 LFS
+    
+    - name: Build Docker image
+      run: docker build -t personal_page:latest .
+
+    - name: Push to HuggingFace Space
+      env:
+        HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      run: |
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
+        git remote add space https://huggingface.co/spaces/TristanHsu/personal_page || true
+        git push --force https://TristanHsu:$HF_TOKEN@huggingface.co/spaces/TristanHsu/personal_page HEAD:main
