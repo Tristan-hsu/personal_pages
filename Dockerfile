@@ -19,23 +19,14 @@ USER flaskuser
 
 # Copy dependency definitions first
 COPY pyproject.toml ./
+COPY uv.lock ./
 
 # Copy application code
 COPY . .
 
 # Install Python dependencies
-RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir \
-        email-validator>=2.2.0 \
-        flask-wtf>=1.2.2 \
-        flask>=3.1.1 \
-        flask-sqlalchemy>=3.1.1 \
-        gunicorn>=23.0.0 \
-        psycopg2-binary>=2.9.10 \
-        requests>=2.32.4 \
-        werkzeug>=3.1.3 \
-        sqlalchemy>=2.0.41 \
-        wtforms>=3.2.1
+RUN pip install --no-cache-dir uv \
+    && uv pip install --no-cache-dir -r uv.lock
 
 ENV FLASK_INSTANCE_PATH=/app/instance
 
