@@ -7,6 +7,7 @@ ENV PYTHONUNBUFFERED=1
 # Install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \
+        libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -19,6 +20,7 @@ USER flaskuser
 COPY pyproject.toml ./
 
 # Install Python dependencies
+USER root
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir \
         email-validator>=2.2.0 \
@@ -31,6 +33,7 @@ RUN pip install --no-cache-dir --upgrade pip \
         werkzeug>=3.1.3 \
         sqlalchemy>=2.0.41 \
         wtforms>=3.2.1
+USER flaskuser
 
 # Copy application code
 COPY . .
@@ -41,4 +44,4 @@ ENV FLASK_INSTANCE_PATH=/app/instance
 EXPOSE 7860
 
 # Launch the application using gunicorn
-CMD ["/bin/sh", "-c", "gunicorn --bind 0.0.0.0:$PORT --workers 1 main:app"]
+CMD ["/bin/sh", "-c", "gunicorn --bind 0.0.0.0:$PORT --workers 1 app:app"]
