@@ -11,6 +11,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
+# Create a non-root user and set permissions
+RUN adduser --system --group flaskuser && chown -R flaskuser:flaskuser /app
+USER flaskuser
+
 # Copy dependency definitions first
 COPY pyproject.toml ./
 
