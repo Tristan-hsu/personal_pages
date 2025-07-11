@@ -32,7 +32,7 @@ RUN pip install --no-cache-dir --upgrade pip \
 COPY . .
 
 ENV PORT=7860
-
+ENV FLASK_INSTANCE_PATH=/app/instance
 # Expose the default Hugging Face port
 EXPOSE 7860
 
