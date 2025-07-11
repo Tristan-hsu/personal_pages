@@ -12,15 +12,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
-# Create a non-root user and set permissions
+# Create a non-root user and set permissions for /app
 RUN adduser --system --group flaskuser && chown -R flaskuser:flaskuser /app
+
 USER flaskuser
 
 # Copy dependency definitions first
 COPY pyproject.toml ./
 
+# Copy application code
+COPY . .
+
 # Install Python dependencies
-USER root
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir \
         email-validator>=2.2.0 \
@@ -33,13 +36,10 @@ RUN pip install --no-cache-dir --upgrade pip \
         werkzeug>=3.1.3 \
         sqlalchemy>=2.0.41 \
         wtforms>=3.2.1
-USER flaskuser
 
-# Copy application code
-COPY . .
+ENV FLASK_INSTANCE_PATH=/app/instance
 
 ENV PORT=7860
-ENV FLASK_INSTANCE_PATH=/app/instance
 # Expose the default Hugging Face port
 EXPOSE 7860
 
